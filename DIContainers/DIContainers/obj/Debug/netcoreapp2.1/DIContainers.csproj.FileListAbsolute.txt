@@ -1,0 +1,11 @@
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\bin\Debug\netcoreapp2.1\DIContainers.deps.json
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\bin\Debug\netcoreapp2.1\DIContainers.runtimeconfig.json
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\bin\Debug\netcoreapp2.1\DIContainers.runtimeconfig.dev.json
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\bin\Debug\netcoreapp2.1\DIContainers.dll
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\bin\Debug\netcoreapp2.1\DIContainers.pdb
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.csprojAssemblyReference.cache
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.csproj.CoreCompileInputs.cache
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.AssemblyInfoInputs.cache
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.AssemblyInfo.cs
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.dll
+C:\Users\rnayyar\source\repos\DIContainers\DIContainers\obj\Debug\netcoreapp2.1\DIContainers.pdb
