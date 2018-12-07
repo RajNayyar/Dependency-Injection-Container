@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIContainers", "DIContainers\DIContainers.csproj", "{2AE61970-6052-470B-99B8-7DF8A9BD2368}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIContainers", "DIContainers\DIContainers.csproj", "{2AE61970-6052-470B-99B8-7DF8A9BD2368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIContianer.Fixtures", "DIContianer.Fixtures\DIContianer.Fixtures.csproj", "{A07C5585-7E92-4F12-8DBE-B6011E197C9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2AE61970-6052-470B-99B8-7DF8A9BD2368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AE61970-6052-470B-99B8-7DF8A9BD2368}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AE61970-6052-470B-99B8-7DF8A9BD2368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A07C5585-7E92-4F12-8DBE-B6011E197C9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A07C5585-7E92-4F12-8DBE-B6011E197C9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A07C5585-7E92-4F12-8DBE-B6011E197C9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A07C5585-7E92-4F12-8DBE-B6011E197C9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
