@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DIContainers
 {
@@ -24,15 +25,31 @@ namespace DIContainers
             // 2. If the instance has a default contstructor, invoke it.
             // 3. Else identify constructor parameters, build them first and then use them
             // to create the required object.
+            // 4. Inject any property level dependencies.
             var typeToCreate = ResolveType(type);
             var defaultConstructor = typeToCreate.GetConstructors()
                                             .Where(c => c.GetParameters().Length == 0)
                                             .SingleOrDefault();
             var hasDefaultConstructor = defaultConstructor != null;
+            object instance = null;
             if (hasDefaultConstructor == true)
-                return CreateWithDefaultConstructor(typeToCreate);
+                instance = CreateWithDefaultConstructor(typeToCreate);
             else
-                return CreateWithParameterisedConstructor(typeToCreate);
+                instance = CreateWithParameterisedConstructor(typeToCreate);
+
+            InitializePropertyDependencies(instance);
+            return instance;
+        }
+
+        private void InitializePropertyDependencies(object instance)
+        {
+            var type = instance.GetType();
+            type
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanWrite == true)
+                .Where( p => p.IsDefined(typeof(DependencyAttribute)))
+                .ToList()
+                .ForEach(p => p.SetValue(instance, Build(p.PropertyType)));
         }
 
         public TypeRegistration GetRegistration(Type type)
@@ -67,9 +84,18 @@ namespace DIContainers
             var isMapped = _registrations.ContainsKey(type);
             var shouldReturnMapping = isInterfaceOrAbstractType || isMapped;
             if (shouldReturnMapping == true)
-                return _registrations[type];
+            {
+                if (_registrations.TryGetValue(type, out Type implType) == false)
+                    throw new DIContainerException($"{type.Name} is not registered.");
+                return implType;
+            }
             else return type;
         }
     }
 
+    [AttributeUsage(AttributeTargets.Property)]
+    public class DependencyAttribute : Attribute
+    {
+
+    }
 }
