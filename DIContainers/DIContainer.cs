@@ -35,6 +35,14 @@ namespace DIContainers
                 return CreateWithParameterisedConstructor(typeToCreate);
         }
 
+        public TypeRegistration GetRegistration(Type type)
+        {
+            if (_registrations.TryGetValue(type, out Type implType) == false)
+                return null;
+            else
+                return new TypeRegistration { ContractType = type, ImplementationType = implType };
+        }
+
         private object CreateWithParameterisedConstructor(Type typeToCreate)
         {
             var constr = typeToCreate
