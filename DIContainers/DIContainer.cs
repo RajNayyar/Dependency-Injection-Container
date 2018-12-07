@@ -5,18 +5,17 @@ using System.Reflection;
 
 namespace DIContainers
 {
-
-
     public class DIContainer
     {
-        private Dictionary<Type, Type> _registrations = new Dictionary<Type, Type>();
+        //private Dictionary<Type, Type> _registrations = new Dictionary<Type, Type>();
+        private Dictionary<TypeKey, Type> _registrations = new Dictionary<TypeKey, Type>();
 
-        public void Register(Type contract, Type concreteType)
+        public void Register(Type contract, Type concreteType, string name = null)
         {
-            _registrations[contract] = concreteType;
+            _registrations[new TypeKey(contract, name)] = concreteType;
         }
 
-        public object Build(Type type)
+        public object Build(Type type, string name = null)
         {
             // This should create an instance of the given type
             // How do we do that?
@@ -26,7 +25,7 @@ namespace DIContainers
             // 3. Else identify constructor parameters, build them first and then use them
             // to create the required object.
             // 4. Inject any property level dependencies.
-            var typeToCreate = ResolveType(type);
+            var typeToCreate = ResolveType(type, name);
             var defaultConstructor = typeToCreate.GetConstructors()
                                             .Where(c => c.GetParameters().Length == 0)
                                             .SingleOrDefault();
@@ -52,12 +51,21 @@ namespace DIContainers
                 .ForEach(p => p.SetValue(instance, Build(p.PropertyType)));
         }
 
-        public TypeRegistration GetRegistration(Type type)
+        public TypeRegistration GetRegistration(Type type, string name = null)
         {
-            if (_registrations.TryGetValue(type, out Type implType) == false)
+            if (_registrations.TryGetValue(new TypeKey(type, name), out Type implType) == false)
                 return null;
             else
                 return new TypeRegistration { ContractType = type, ImplementationType = implType };
+        }
+
+        public TypeRegistration[] GetRegistrations(Type type)
+        {
+            return _registrations
+                        .Where(x => x.Key.Type.Equals(type))
+                        .Select(x => new TypeRegistration { ContractType = x.Key.Type, Name = x.Key.Name, ImplementationType = x.Value })
+                        .ToArray();
+                   
         }
 
         private object CreateWithParameterisedConstructor(Type typeToCreate)
@@ -78,14 +86,15 @@ namespace DIContainers
             return Activator.CreateInstance(typeToCreate);
         }
 
-        private Type ResolveType(Type type)
+        private Type ResolveType(Type type, string name)
         {
+            var key = new TypeKey(type, name);
             var isInterfaceOrAbstractType = type.IsInterface || type.IsAbstract;
-            var isMapped = _registrations.ContainsKey(type);
+            var isMapped = _registrations.ContainsKey(key);
             var shouldReturnMapping = isInterfaceOrAbstractType || isMapped;
             if (shouldReturnMapping == true)
             {
-                if (_registrations.TryGetValue(type, out Type implType) == false)
+                if (_registrations.TryGetValue(key, out Type implType) == false)
                     throw new DIContainerException($"{type.Name} is not registered.");
                 return implType;
             }
@@ -93,9 +102,4 @@ namespace DIContainers
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public class DependencyAttribute : Attribute
-    {
-
-    }
 }

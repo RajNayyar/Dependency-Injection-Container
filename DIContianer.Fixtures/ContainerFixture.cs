@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using FluentAssertions;
 using DIContainers;
+using System.Linq;
 
 namespace DIContianer.Fixtures
 {
@@ -104,6 +105,33 @@ namespace DIContianer.Fixtures
             x.Y2.Should().BeNull();
         }
 
+        [Fact]
+        public void Multiple_type_registrations_test()
+        {
+            var container = new DIContainer();
+            container
+                .Register<IX, X>("x")
+                .Register<IX, XAlt>("xalt");
+            var registrations = container.GetRegistrations(typeof(IX));
+            registrations.Length.Should().Be(2);
+            Array
+                .ConvertAll(registrations, x => x.Name)
+                .Should()
+                .Contain(new[] { "x", "xalt" });
+
+        }
+
+        [Fact]
+        public void Multiple_type_registrations_should_support_named_build_test()
+        {
+            var container = new DIContainer();
+            container
+                .Register<IX, X>("x")
+                .Register<IX, XAlt>("xalt");
+            container.Build<IX>("x").Should().BeOfType<X>();
+            container.Build<IX>("xalt").Should().BeOfType<XAlt>();
+
+        }
 
     }
 }

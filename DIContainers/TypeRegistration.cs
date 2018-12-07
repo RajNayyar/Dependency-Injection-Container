@@ -7,5 +7,7 @@ namespace DIContainers
         public Type ContractType { get; set; }
 
         public Type ImplementationType { get; set; }
+
+        public string Name { get; set; }
     }
 }
